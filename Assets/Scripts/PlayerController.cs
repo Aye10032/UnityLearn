@@ -23,6 +23,9 @@ public class PlayerController : MonoBehaviour
     private static readonly int LookY = Animator.StringToHash("Look Y");
     private static readonly int Speed = Animator.StringToHash("Speed");
 
+    public GameObject bulletPrefab;
+    private static readonly int Launch = Animator.StringToHash("Launch");
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,7 +48,7 @@ public class PlayerController : MonoBehaviour
         {
             _lookDirection = moveVector;
         }
-        
+
         _animator.SetFloat(LookX, _lookDirection.x);
         _animator.SetFloat(LookY, _lookDirection.y);
         _animator.SetFloat(Speed, moveVector.magnitude);
@@ -65,6 +68,17 @@ public class PlayerController : MonoBehaviour
             if (_invincibleTimer < 0)
             {
                 _isInvincible = false;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            _animator.SetTrigger(Launch);
+            GameObject bullet = Instantiate(bulletPrefab, _rigidbody.position + Vector2.up * 0.5f, Quaternion.identity);
+            BulletController bulletController = bullet.GetComponent<BulletController>();
+            if (bulletController != null)
+            {
+                bulletController.Move(_lookDirection, 300);
             }
         }
     }

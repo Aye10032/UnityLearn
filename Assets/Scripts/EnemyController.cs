@@ -14,11 +14,14 @@ public class EnemyController : MonoBehaviour
     public float changeDirectionTime = 4f;
     private float _changeDirectionTimer;
 
+    private bool _isFixed = false;
+    
     private Rigidbody2D _rigidbody2D;
 
     private Animator _animator;
     private static readonly int MoveX = Animator.StringToHash("moveX");
     private static readonly int MoveY = Animator.StringToHash("moveY");
+    private static readonly int Fix = Animator.StringToHash("fix");
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +38,11 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_isFixed)
+        {
+            return;
+        }
+        
         _changeDirectionTimer -= Time.fixedDeltaTime;
         if (_changeDirectionTimer < 0)
         {
@@ -59,5 +67,12 @@ public class EnemyController : MonoBehaviour
         {
             controller.UpdateHealth(-1);
         }
+    }
+    
+    public void Fixed()
+    {
+        _rigidbody2D.simulated = false;
+        _isFixed = true;
+        _animator.SetTrigger(Fix);
     }
 }
