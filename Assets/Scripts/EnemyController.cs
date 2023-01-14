@@ -15,6 +15,8 @@ public class EnemyController : MonoBehaviour
     private float _changeDirectionTimer;
 
     private bool _isFixed = false;
+
+    public ParticleSystem brokenEffect;
     
     private Rigidbody2D _rigidbody2D;
 
@@ -74,5 +76,9 @@ public class EnemyController : MonoBehaviour
         _rigidbody2D.simulated = false;
         _isFixed = true;
         _animator.SetTrigger(Fix);
+        if (brokenEffect.isPlaying)
+        {
+            brokenEffect.Stop();
+        }
     }
 }
